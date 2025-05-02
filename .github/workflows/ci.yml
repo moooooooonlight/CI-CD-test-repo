@@ -139,6 +139,6 @@ jobs:
         script: |
           mkdir -p ~/app
           pkill -f 'java -jar' || true
-          mv ~/app/target/ink3-0.0.1-SNAPSHOT.jar ~/app/app.jar
+          mv ~/app/ink3/target/ink3-0.0.1-SNAPSHOT.jar ~/app/app.jar
           nohup java -jar ~/app/app.jar > ~/app/app.log 2>&1 &
 
