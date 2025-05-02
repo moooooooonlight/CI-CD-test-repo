@@ -37,6 +37,7 @@ jobs:
       - name: Build & test with Maven
         run: mvn clean verify -B
         working-directory: ./ink3
+        
 
       # #실행테스트
   smoke-test:
@@ -72,6 +73,10 @@ jobs:
       # 6. 헬스 체크 엔드포인트 호출
       - name: Check health endpoint
         run: curl --fail http://localhost:8080/actuator/health
+
+      - name: Check packaged JAR exists
+        run: ls -lh target/*.jar
+        working-directory: ./ink3
 
       # 7. 애플리케이션 종료
       - name: Stop application
