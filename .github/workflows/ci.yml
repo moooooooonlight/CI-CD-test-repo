@@ -66,6 +66,8 @@ jobs:
         run: |
           nohup java -jar target/*.jar > app.log 2>&1 & echo $! > app.pid
         working-directory: ./ink3
+
+
       # 5. 기동 대기
       - name: Wait for application to start
         run: sleep 30
@@ -81,6 +83,8 @@ jobs:
       # 7. 애플리케이션 종료
       - name: Stop application
         run: kill $(cat app.pid)
+        working-directory: ./ink3
+
 
 
 
@@ -100,6 +104,7 @@ jobs:
 
     - name: Package application
       run: mvn package -DskipTests -B
+      working-directory: ./ink3
 
     - name: Test SSH Only
       uses: appleboy/ssh-action@v0.1.7
