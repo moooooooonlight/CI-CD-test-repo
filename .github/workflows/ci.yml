@@ -129,15 +129,22 @@ jobs:
           target: "~/app/"
 
 
-    - name: Deploy JAR
-      run: |
-        mkdir -p ~/app
-        pkill -f 'java -jar' || true
-        if [ -f ~/app/ink3-0.0.1-SNAPSHOT.jar ]; then
-          mv ~/app/ink3-0.0.1-SNAPSHOT.jar ~/app/app.jar
-        else
-          echo "JAR 파일이 존재하지 않습니다!" && exit 1
-        fi
+    - name: Deploy JAR on server
+      uses: appleboy/ssh-action@v0.1.7
+      with:
+        host: ${{ secrets.SSH_IP }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_ID }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          mkdir -p ~/app
+          pkill -f 'java -jar' || true
+          if [ -f ~/app/ink3-0.0.1-SNAPSHOT.jar ]; then
+            mv ~/app/ink3-0.0.1-SNAPSHOT.jar ~/app/app.jar
+          else
+            echo "JAR 파일이 존재하지 않습니다!" && exit 1
+          fi
+          nohup java -jar ~/app/app.jar > ~/app/app.log 2>&1 &
 
     - name: Restart app on server
       uses: appleboy/ssh-action@v0.1.7
